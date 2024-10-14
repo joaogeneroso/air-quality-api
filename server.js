@@ -1,7 +1,7 @@
 // /server.js
 const express = require('express');
 const dotenv = require('dotenv');
-const dataRoutes = require('./src/routes/dataRoutes');
+const dataRoutes = require('./src/routes/DataRoutes');
 
 dotenv.config();
 const app = express();
