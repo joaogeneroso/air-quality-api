@@ -1,18 +1,25 @@
 const admin = require('firebase-admin');
-const fs = require('fs');
-const path = require('path');
-const serviceAccount = require('../../keys/qualidade-ar-370f6-firebase-adminsdk-6lr3s-1ed80a9f3b.json');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 class FirebaseConfig {
   constructor() {
     if (!admin.apps.length) {
-      const privateKeysPath = path.resolve(__dirname, '../../keys/PrivateKeys.json');
-      const privateKeysFile = fs.readFileSync(privateKeysPath);
-      const privateKeys = JSON.parse(privateKeysFile);
-      
       admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: privateKeys.databaseURL
+        credential: admin.credential.cert({
+          type: process.env.TYPE,
+          project_id: process.env.PROJECT_ID,
+          private_key_id: process.env.PRIVATE_KEY_ID,
+          private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+          client_email: process.env.CLIENT_EMAIL,
+          client_id: process.env.CLIENT_ID,
+          auth_uri: process.env.AUTH_URI,
+          token_uri: process.env.TOKEN_URI,
+          auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL,
+          client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
+        }),
+        databaseURL: process.env.DATABASE_URL,
       });
     }
   }
